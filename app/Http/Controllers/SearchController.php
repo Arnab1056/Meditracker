@@ -14,6 +14,7 @@ class SearchController extends Controller
         $query = $request->input('query');
         $results = PharmacyMedicine::where('medicine_name', 'LIKE', "%{$query}%")
             ->where('quantity', '>', 0) // Ensure quantity is greater than 0
+            ->where('status', '!=', 'pending') // Exclude pending status
             ->join('pharmacies', 'pharmacy_medicines.pharmacy_id', '=', 'pharmacies.id')
             ->get(['pharmacy_medicines.id', 'pharmacies.name as pharmacy_name', 'pharmacies.location as location', 'pharmacy_medicines.medicine_name', 'pharmacy_medicines.quantity', 'pharmacy_medicines.price'])
             ->map(function ($item) {

@@ -23,7 +23,11 @@ use App\Http\Controllers\MedicineOrderController; // Import the MedicineOrderCon
 */
 
 // Home route
-Route::get('/', [ButtonController::class, 'index'])->name('home');
+
+
+Route::get('/', function () {
+    return view('index');
+})->name('home');
 
 // Example routes
 Route::get('/route1', [ButtonController::class, 'route1'])->name('route1');

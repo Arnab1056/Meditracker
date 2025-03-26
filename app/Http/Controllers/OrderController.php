@@ -24,20 +24,25 @@ class OrderController extends Controller
     {
         $order = Cart::find($id);
         if ($order && $order->pharmacy->email == auth()->user()->email) { // Check if order belongs to logged-in pharmacy
-            // Logic to mark the order as accepted
-            $order->status = 'accepted';
-            $order->save();
-
             // Decrease the quantity of the medicine in the pharmacy_medicines table
             $pharmacyMedicine = PharmacyMedicine::where('medicine_id', $order->medicine_id)
                                                 ->where('pharmacy_id', $order->pharmacy_id)
                                                 ->first();
             if ($pharmacyMedicine) {
-                $pharmacyMedicine->quantity -= $order->quantity;
-                $pharmacyMedicine->save();
-            }
+                if ($pharmacyMedicine->quantity >= $order->quantity) {
+                    // Logic to mark the order as accepted
+                    $order->status = 'accepted';
+                    $order->save();
 
-            return redirect()->back()->with('success', 'Order accepted successfully!');
+                    $pharmacyMedicine->quantity -= $order->quantity;
+                    $pharmacyMedicine->sold += $order->quantity; // Increase the sold value
+                    $pharmacyMedicine->save();
+
+                    return redirect()->back()->with('success', 'Order accepted successfully!');
+                } else {
+                    return redirect()->back()->with('error', 'Insufficient quantity available.');
+                }
+            }
         } 
         return redirect()->back()->with('error', 'Order not found!');
     }
@@ -47,7 +52,7 @@ class OrderController extends Controller
         if ($order->pharmacy->email == auth()->user()->email) { // Check if order belongs to logged-in pharmacy
             $order->status = 'declined';
             $order->save();
-            return redirect()->route('orders.index')->with('status', 'Order declined successfully.');
+            return redirect()->route('orders.index')->with('success', 'Order declined successfully.');
         }
         return redirect()->route('orders.index')->with('error', 'Order not found.');
     }
@@ -57,7 +62,7 @@ class OrderController extends Controller
         $order = Cart::find($id);
         if ($order && $order->pharmacy->email == auth()->user()->email) { // Check if order belongs to logged-in pharmacy
             $order->delete();
-            return redirect()->route('orders.index')->with('status', 'Order removed successfully.');
+            return redirect()->route('orders.index')->with('success', 'Order removed successfully.');
         }
         return redirect()->route('orders.index')->with('error', 'Order not found.');
     }

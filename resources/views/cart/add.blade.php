@@ -33,13 +33,12 @@
         </div>
         <div class="form-group">
             <label for="pharmacy_id">Pharmacy ID</label>
-            <input type="text" class="form-control" id="pharmacy_id" name="pharmacy_id" value="{{ $pharmacy_id }}" readonly> <!-- Display pharmacy_id -->
+            <input type="text" class="form-control" id="pharmacy_id" name="pharmacy_id" value="{{ $pharmacy_id }}" readonly>
         </div>
         <div class="form-group">
             <label for="quantity">Quantity</label>
             <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1">
         </div>
-        <input type="hidden" name="pharmacy_id" value="{{ $pharmacy_id }}"> <!-- Ensure pharmacy_id is correctly named -->
         <button type="submit" class="btn btn-primary">Add to Cart</button>
     </form>
 </div>

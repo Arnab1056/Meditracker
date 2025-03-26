@@ -13,7 +13,7 @@ class Cart extends Model
     protected $table = 'carts';
 
     // Define the fillable fields
-    protected $fillable = ['user_id', 'medicine_id', 'quantity', 'price', 'pharmacy_id', 'status']; // Include status
+    protected $fillable = ['user_id', 'medicine_id', 'pharmacy_id', 'quantity', 'price', 'status']; // Include pharmacy_id and status
 
     public function user()
     {
@@ -25,13 +25,13 @@ class Cart extends Model
         return $this->belongsTo(Medicine::class);
     }
 
+    public function pharmacy()
+    {
+        return $this->belongsTo(Pharmacy::class, 'pharmacy_id'); // Define relationship with Pharmacy
+    }
+
     public function totalPrice()
     {
         return $this->quantity * $this->price;
-    }
-
-    public function pharmacy()
-    {
-        return $this->belongsTo(Pharmacy::class);
     }
 }

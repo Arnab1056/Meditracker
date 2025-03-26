@@ -30,27 +30,22 @@ class CartController extends Controller
     {
         // Validate the request
         $request->validate([
-            'user_id' => 'required|integer',
-            'medicine_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
+            'medicine_id' => 'required|integer|exists:medicines,id',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric',
-            'pharmacy_id' => 'required|integer', // Validate pharmacy_id
+            'pharmacy_id' => 'required|integer|exists:pharmacies,id', // Validate pharmacy_id
         ]);
-
-        // Fetch the pharmacy_id from the pharmacy_medicines table
-        $pharmacyMedicine = PharmacyMedicine::where('medicine_id', $request->medicine_id)->first();
-        if (!$pharmacyMedicine) {
-            return redirect()->back()->with('error', 'Pharmacy not found for the given medicine!');
-        }
 
         // Logic to add the medicine to the cart
         Cart::create([
             'user_id' => $request->user_id,
             'medicine_id' => $request->medicine_id,
-            'pharmacy_id' => $pharmacyMedicine->pharmacy_id, // Include pharmacy_id
+            'pharmacy_id' => $request->pharmacy_id, // Use pharmacy_id from the request
             'quantity' => $request->quantity,
             'price' => $request->price, // Include price
         ]);
+
         return redirect()->route('cart.show')->with('success', 'Medicine added to cart!');
     }
 

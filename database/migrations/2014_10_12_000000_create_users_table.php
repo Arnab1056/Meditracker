@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +13,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('role');
-            $table->string('location')->nullable(); // Store location as a string to hold URLs
+            $table->integer('role'); // Role field for user roles
+            $table->rememberToken();
             $table->timestamps();
         });
     }

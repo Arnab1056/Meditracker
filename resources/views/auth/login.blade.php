@@ -92,6 +92,9 @@
                   </span>
                 @enderror
               </div>
+              <div class="text-end mb-3">
+                <a href="{{ route('password.request') }}" class="text-decoration-none">Forgot Password?</a>
+              </div>
               <div class="text-center">
                 <button type="submit" class="btn btn-primary">Login</button>
               </div>

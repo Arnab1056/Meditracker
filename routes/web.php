@@ -10,6 +10,8 @@ use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MedicineOrderController; // Import the MedicineOrderController
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +106,12 @@ Route::patch('pharmacy_medicines/updateByPrice/{price}', [App\Http\Controllers\M
 Route::patch('pharmacy_medicines/updateByPharmacyMedicineId/{id}', [MedicineOrderController::class, 'updateByPharmacyMedicineId'])->name('pharmacy_medicines.updateByPharmacyMedicineId');
 
 Route::patch('/pharmacy_medicines/{id}/updatePrice', [MedicineOrderController::class, 'updatePriceById'])->name('pharmacy_medicines.updatePrice');
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

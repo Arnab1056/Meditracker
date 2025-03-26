@@ -90,8 +90,9 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
+            'expire' => 60, // Token expiry in minutes
             'throttle' => 60,
+            'reset_url' => 'http://localhost/reset-password/{token}?email=user@example.com',
         ],
     ],
 

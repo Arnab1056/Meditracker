@@ -12,9 +12,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MedicineOrderController; // Import the MedicineOrderController
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-  
-
 use App\Http\Controllers\StripePaymentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,6 +121,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/orders/{id}/remove', [OrderController::class, 'remove'])->name('orders.remove');
 });
 
+Route::post('/stripe/checkout', [CartController::class, 'stripeCheckout'])->name('stripe.checkout');
+Route::get('/cart/success', [CartController::class, 'success'])->name('cart.success');
+Route::get('/cart/cancel', [CartController::class, 'cancel'])->name('cart.cancel');
 
 Route::controller(StripePaymentController::class)->group(function(){
 
@@ -130,3 +132,7 @@ Route::controller(StripePaymentController::class)->group(function(){
     Route::post('stripe', 'stripePost')->name('stripe.post');
 
 });
+
+Route::get('/stripe', function () {
+    return view('stripe');
+})->name('stripe.page');

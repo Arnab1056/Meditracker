@@ -41,5 +41,14 @@
         </div>
         <button type="submit" class="btn btn-primary">Add to Cart</button>
     </form>
+    <form action="{{ route('stripe.page') }}" method="GET">
+        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+        <input type="hidden" name="medicine_id" value="{{ $medicine->id }}">
+        <input type="hidden" name="medicine_name" value="{{ $medicine->name }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="price" value="{{ $price }}">
+        <input type="hidden" name="pharmacy_id" value="{{ $pharmacy_id }}">
+        <button type="submit" class="btn btn-success mt-2">Pay with Stripe</button>
+    </form>
 </div>
 @endsection

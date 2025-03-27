@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Medicine;
 use App\Models\Cart;
 use App\Models\PharmacyMedicine;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class CartController extends Controller
 {
@@ -63,5 +65,39 @@ class CartController extends Controller
             return redirect()->back()->with('success', 'Item removed from cart!');
         }
         return redirect()->back()->with('error', 'Item not found!');
+    }
+
+    public function stripeCheckout(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $request->input('medicine_id'),
+                    ],
+                    'unit_amount' => $request->input('price') * 100,
+                ],
+                'quantity' => $request->input('quantity'),
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('cart.success'),
+            'cancel_url' => route('cart.cancel'),
+        ]);
+
+        return redirect($session->url);
+    }
+
+    public function success()
+    {
+        return view('cart.success');
+    }
+
+    public function cancel()
+    {
+        return view('cart.cancel');
     }
 }

@@ -12,9 +12,14 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('medicine_id')->constrained()->onDelete('cascade');
-            $table->foreignId('pharmacy_id'); // Add pharmacy_id column
+            $table->foreignId('pharmacy_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
-            $table->decimal('price', 8, 2); // Add price column
+            $table->decimal('price', 10, 2);
+            $table->string('status')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('payment_status')->nullable();
+            $table->timestamp('payment_date')->nullable();
+            $table->decimal('total_amount', 10, 2);
             $table->timestamps();
         });
     }

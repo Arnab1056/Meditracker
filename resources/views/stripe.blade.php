@@ -1,165 +1,61 @@
-<!DOCTYPE html>
+@extends('layouts.user')
 
-<html>
-
-<head>
-
-    <title>Laravel 10 - Stripe Payment Gateway Integration Example - ItSolutionStuff.com</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-</head>
-
-<body>
-
-      
-
+@section('content')
 <div class="container">
-
-      
-
-    <h1>Laravel 10 - Stripe Payment Gateway Integration Example <br/> ItSolutionStuff.com</h1>
-
-      
-
-    <div class="row">
-
-        <div class="col-md-6 col-md-offset-3">
-
-            <div class="panel panel-default credit-card-box">
-
-                <div class="panel-heading display-table" >
-
-                    <h2 class="panel-title" >Checkout Forms</h2>
-
-                </div>
-
-                <div class="panel-body">
-
-      
-
-                    @if (Session::has('success'))
-
-                        <div class="alert alert-success text-center">
-
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-
-                            <p>{{ Session::get('success') }}</p>
-
-                        </div>
-
-                    @endif
-
-  
-
-                     <form id='checkout-form' method='post' action="{{ route('stripe.post') }}">   
-
-                        @csrf             
-
-                        <input type='hidden' name='stripeToken' id='stripe-token-id'>                              
-
-                        <br>
-
-                        <div id="card-element" class="form-control" ></div>
-
-                        <button 
-
-                            id='pay-btn'
-
-                            class="btn btn-success mt-3"
-
-                            type="button"
-
-                            style="margin-top: 20px; width: 100%;padding: 7px;"
-
-                            onclick="createToken()">PAY $10
-
-                        </button>
-
-                    <form>
-
-      
-
-                </div>
-
-            </div>        
-
+    <h1>Stripe Payment</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Medicine Details</h5>
+            <p><strong>Medicine Name:</strong> {{ request('medicine_name') }}</p>
+            <p><strong>Quantity:</strong> {{ request('quantity') }}</p>
+            <p><strong>Price:</strong> ${{ request('price') }}</p>
+            <p><strong>Total:</strong> ${{ request('price') * request('quantity') }}</p>
         </div>
-
     </div>
+    <form id="payment-form" action="{{ route('stripe.post') }}" method="POST">
+        @csrf
+        <input type="hidden" name="user_id" value="{{ request('user_id') }}">
+        <input type="hidden" name="medicine_id" value="{{ request('medicine_id') }}">
+        <input type="hidden" name="quantity" value="{{ request('quantity') }}">
+        <input type="hidden" name="price" value="{{ request('price') }}">
+        <input type="hidden" name="pharmacy_id" value="{{ request('pharmacy_id') }}">
 
-          
+        <div id="card-element" class="form-control mt-3">
+            <!-- Stripe Elements will create the card input here -->
+        </div>
+        <div id="card-errors" class="text-danger mt-2" role="alert"></div>
 
+        <button type="submit" class="btn btn-primary mt-3">Pay Now</button>
+    </form>
 </div>
 
-      
-
-</body>
-
-     
-
 <script src="https://js.stripe.com/v3/"></script>
-
-<script type="text/javascript">
-
-  
-
-    var stripe = Stripe('{{ env('STRIPE_KEY') }}')
-
-    var elements = stripe.elements();
-
-    var cardElement = elements.create('card');
-
+<script>
+    const stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
     cardElement.mount('#card-element');
 
-  
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    /*------------------------------------------
-
-    --------------------------------------------
-
-    Create Token Code
-
-    --------------------------------------------
-
-    --------------------------------------------*/
-
-    function createToken() {
-
-        document.getElementById("pay-btn").disabled = true;
-
-        stripe.createToken(cardElement).then(function(result) {
-
-   
-
-            if(typeof result.error != 'undefined') {
-
-                document.getElementById("pay-btn").disabled = false;
-
-                alert(result.error.message);
-
-            }
-
-  
-
-            /* creating token success */
-
-            if(typeof result.token != 'undefined') {
-
-                document.getElementById("stripe-token-id").value = result.token.id;
-
-                document.getElementById('checkout-form').submit();
-
-            }
-
+        const { paymentMethod, error } = await stripe.createPaymentMethod({
+            type: 'card',
+            card: cardElement,
         });
 
-    }
+        if (error) {
+            document.getElementById('card-errors').textContent = error.message;
+        } else {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'payment_method_id');
+            hiddenInput.setAttribute('value', paymentMethod.id);
+            form.appendChild(hiddenInput);
 
+            form.submit();
+        }
+    });
 </script>
-
- 
-
-</html>
+@endsection

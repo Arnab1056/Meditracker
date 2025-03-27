@@ -13,7 +13,18 @@ class Cart extends Model
     protected $table = 'carts';
 
     // Define the fillable fields
-    protected $fillable = ['user_id', 'medicine_id', 'pharmacy_id', 'quantity', 'price', 'status']; // Include pharmacy_id and status
+    protected $fillable = [
+        'user_id',
+        'medicine_id',
+        'pharmacy_id',
+        'quantity',
+        'price',
+        'status',
+        'payment_method',
+        'payment_status',
+        'payment_date',
+        'total_amount',
+    ];
 
     public function user()
     {

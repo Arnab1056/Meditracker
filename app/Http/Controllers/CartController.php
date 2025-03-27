@@ -45,6 +45,10 @@ class CartController extends Controller
             'medicine_id' => $request->medicine_id,
             'pharmacy_id' => $request->pharmacy_id, // Use pharmacy_id from the request
             'quantity' => $request->quantity,
+            'payment_method' => 'Cash On Delivery',
+            'payment_status' => 'Pending',
+            'payment_date'=>now(),
+            'total_amount'=> $request->quantity*$request->price,// Set payment_status to 'cashondelivery'
             'price' => $request->price, // Include price
         ]);
 

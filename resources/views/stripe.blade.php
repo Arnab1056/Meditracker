@@ -7,16 +7,16 @@
         <div class="card-body">
             <h5 class="card-title">Medicine Details</h5>
             <p><strong>Medicine Name:</strong> {{ request('medicine_name') }}</p>
-            <p><strong>Quantity:</strong> {{ request('quantity') }}</p>
+            <p><strong>Quantity:</strong> {{ request('quantity', 1) }}</p> <!-- Added fallback -->
             <p><strong>Price:</strong> ${{ request('price') }}</p>
-            <p><strong>Total:</strong> ${{ request('price') * request('quantity') }}</p>
+            <p><strong>Total:</strong> ${{ request('price') * request('quantity', 1) }}</p> <!-- Added fallback -->
         </div>
     </div>
     <form id="payment-form" action="{{ route('stripe.post') }}" method="POST">
         @csrf
         <input type="hidden" name="user_id" value="{{ request('user_id') }}">
         <input type="hidden" name="medicine_id" value="{{ request('medicine_id') }}">
-        <input type="hidden" name="quantity" value="{{ request('quantity') }}">
+        <input type="hidden" name="quantity" value="{{ request('quantity', 1) }}"> <!-- Added fallback -->
         <input type="hidden" name="price" value="{{ request('price') }}">
         <input type="hidden" name="pharmacy_id" value="{{ request('pharmacy_id') }}">
 

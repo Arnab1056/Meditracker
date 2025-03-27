@@ -69,6 +69,13 @@ class CartController extends Controller
 
     public function stripeCheckout(Request $request)
     {
+        // Validate the request to ensure required fields are present
+        $request->validate([
+            'medicine_id' => 'required|integer|exists:medicines,id',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer|min:1', // Ensure quantity is validated
+        ]);
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $session = Session::create([
@@ -77,11 +84,11 @@ class CartController extends Controller
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => $request->input('medicine_id'),
+                        'name' => Medicine::find($request->input('medicine_id'))->name, // Fetch medicine name
                     ],
                     'unit_amount' => $request->input('price') * 100,
                 ],
-                'quantity' => $request->input('quantity'),
+                'quantity' => $request->input('quantity', 1), // Added fallback for quantity
             ]],
             'mode' => 'payment',
             'success_url' => route('cart.success'),

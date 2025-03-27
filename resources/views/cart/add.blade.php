@@ -41,14 +41,23 @@
         </div>
         <button type="submit" class="btn btn-primary">Add to Cart</button>
     </form>
-    <form action="{{ route('stripe.page') }}" method="GET">
+    <form action="{{ route('stripe.page') }}" method="GET" id="stripe-form">
+        @csrf
         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
         <input type="hidden" name="medicine_id" value="{{ $medicine->id }}">
         <input type="hidden" name="medicine_name" value="{{ $medicine->name }}">
-        <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="price" value="{{ $price }}">
         <input type="hidden" name="pharmacy_id" value="{{ $pharmacy_id }}">
+        <input type="hidden" name="quantity" id="stripe-quantity" value="1"> <!-- Dynamically updated -->
         <button type="submit" class="btn btn-success mt-2">Pay with Stripe</button>
     </form>
 </div>
+
+<script>
+    // Dynamically update the quantity in the Stripe form on submission
+    document.getElementById('stripe-form').addEventListener('submit', function (event) {
+        const quantityInput = document.getElementById('quantity').value;
+        document.getElementById('stripe-quantity').value = quantityInput;
+    });
+</script>
 @endsection

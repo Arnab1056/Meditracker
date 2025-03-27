@@ -12,7 +12,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MedicineOrderController; // Import the MedicineOrderController
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+  
 
+use App\Http\Controllers\StripePaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -121,3 +123,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+Route::controller(StripePaymentController::class)->group(function(){
+
+    Route::get('stripe', 'stripe');
+
+    Route::post('stripe', 'stripePost')->name('stripe.post');
+
+});

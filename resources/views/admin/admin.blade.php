@@ -194,8 +194,13 @@
 
   <div class="b-example-divider b-example-vr"></div>
 
+  
+
   <div class="container mt-4">
     <h2>Users</h2>
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal">
+        Create New User
+    </button>
     <table class="table table-striped table-dark">
       <thead>
         <tr>
@@ -235,6 +240,51 @@
     </table>
   </div>
 
+  <!-- Create User Modal -->
+  <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createUserModalLabel">Create New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.storeUser') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="1">Admin</option>
+                            <option value="2">Maker</option>
+                            <option value="3">Pharmacy</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
   <!-- Add modals for editing users -->
   @foreach ($users as $user)
   <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ $user->id }}" aria-hidden="true">
@@ -258,7 +308,11 @@
             </div>
             <div class="mb-3">
               <label for="role{{ $user->id }}" class="form-label">Role</label>
-              <input type="text" class="form-control" id="role{{ $user->id }}" name="role" value="{{ $user->role }}" required>
+              <select class="form-select" id="role{{ $user->id }}" name="role" required>
+                <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Admin</option>
+                <option value="2" {{ $user->role == 2 ? 'selected' : '' }}>Maker</option>
+                <option value="3" {{ $user->role == 3 ? 'selected' : '' }}>Pharmacy</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer">

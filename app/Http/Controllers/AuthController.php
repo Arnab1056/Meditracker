@@ -26,6 +26,9 @@ class AuthController extends Controller
             } elseif ($user->role == 4) { // Check if the user is a regular user
                 return redirect()->route('searchpage');
             }
+            elseif ($user->role == 1) { // Check if the user is a regular user
+                return redirect()->route('admin.page');
+            }
             return redirect()->intended('/');
         }
         return back()->withErrors(['email' => 'Invalid credentials']);

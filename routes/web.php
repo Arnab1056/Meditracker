@@ -144,6 +144,8 @@ Route::get('/stripe', function () {
 
 Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
 
+Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.storeUser');
+
 Route::get('/admin', [UserManagementController::class, 'index'])->name('admin.page');
 
 Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');

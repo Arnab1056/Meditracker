@@ -15,7 +15,7 @@ class CreateCartsTable extends Migration
             $table->foreignId('pharmacy_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
             $table->decimal('price', 10, 2);
-            $table->string('status')->nullable();
+            $table->string('status')->default('pending');;
             $table->string('payment_method')->nullable();
             $table->string('payment_status')->nullable();
             $table->timestamp('payment_date')->nullable();

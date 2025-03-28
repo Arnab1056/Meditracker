@@ -13,6 +13,8 @@ use App\Http\Controllers\MedicineOrderController; // Import the MedicineOrderCon
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,3 +138,9 @@ Route::controller(StripePaymentController::class)->group(function(){
 Route::get('/stripe', function () {
     return view('stripe');
 })->name('stripe.page');
+
+Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
+
+Route::get('/admin', [UserManagementController::class, 'index'])->name('admin.page');
+
+Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');

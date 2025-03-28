@@ -32,6 +32,8 @@
                 <th>Total Price</th>
                 <th>Pharmacy ID</th>
                 <th>Status</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -46,6 +48,8 @@
                     <td>{{ $order->totalPrice() }}</td>
                     <td>{{ $order->pharmacy_id }}</td>
                     <td>{{ $order->status }}</td>
+                    <td>{{ $order->payment_method }}</td>
+                    <td>{{ $order->payment_status }}</td>
                     <td>
                         <form action="{{ route('orders.accept', $order->id) }}" method="POST" style="display:inline;">
                             @csrf
@@ -74,6 +78,8 @@
                 <th>Total Price</th>
                 <th>Pharmacy ID</th>
                 <th>Status</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -88,6 +94,8 @@
                     <td>{{ $order->totalPrice() }}</td>
                     <td>{{ $order->pharmacy_id }}</td>
                     <td>{{ $order->status }}</td>
+                    <td>{{ $order->payment_method }}</td>
+                    <td>{{ $order->payment_status }}</td>
                     <td>
                         <form action="{{ route('orders.remove', $order->id) }}" method="POST" style="display:inline;">
                             @csrf

@@ -23,7 +23,9 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
-                    <th>Status</th> <!-- New column for status -->
+                    <th>Status</th>
+                    <th>Payment Method</th> <!-- New column for payment method -->
+                    <th>Payment Status</th> <!-- New column for payment status -->
                     <th>Action</th>
                 </tr>
             </thead>
@@ -35,6 +37,8 @@
                         <td>{{ $item->price }}</td> <!-- Display price from carts table -->
                         <td>{{ $item->price * $item->quantity }}</td> <!-- Calculate total price -->
                         <td>{{ $item->status }}</td> <!-- Display status -->
+                        <td>{{ $item->payment_method }}</td> <!-- Display payment method -->
+                        <td>{{ $item->payment_status }}</td> <!-- Display payment status -->
                         <td>
                             <form action="{{ route('cart.remove', $item->id) }}" method="POST">
                                 @csrf

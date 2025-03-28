@@ -16,6 +16,8 @@ use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PharmacyManagementController;
+use App\Http\Controllers\MedicineManagementController;
+use App\Http\Controllers\MedicineShowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,3 +151,8 @@ Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name
 Route::get('/admin/pharmacies', [PharmacyManagementController::class, 'index'])->name('admin.pharmacies');
 Route::put('/admin/pharmacies/{id}', [PharmacyManagementController::class, 'update'])->name('pharmacies.update');
 Route::delete('/admin/pharmacies/{id}', [PharmacyManagementController::class, 'destroy'])->name('pharmacies.destroy');
+
+Route::get('/admin/medicines', [MedicineManagementController::class, 'index'])->name('admin.medicines');
+Route::get('/admin/medicines/show', [MedicineShowController::class, 'index'])->name('admin.medicines.show');
+Route::put('/admin/medicines/{id}', [MedicineShowController::class, 'update'])->name('medicines.update');
+Route::delete('/admin/medicines/{id}', [MedicineShowController::class, 'destroy'])->name('medicines.destroy');

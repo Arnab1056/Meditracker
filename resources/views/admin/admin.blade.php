@@ -173,15 +173,16 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="{{ route('admin.medicines') }}" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          Medicines
+          
+        Pharmaceuticals
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="{{route('admin.medicines.show') }}" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-          Users
+          Medicines
         </a>
       </li>
     </ul>

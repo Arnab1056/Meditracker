@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PharmacyManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,3 +145,7 @@ Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('a
 Route::get('/admin', [UserManagementController::class, 'index'])->name('admin.page');
 
 Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+
+Route::get('/admin/pharmacies', [PharmacyManagementController::class, 'index'])->name('admin.pharmacies');
+Route::put('/admin/pharmacies/{id}', [PharmacyManagementController::class, 'update'])->name('pharmacies.update');
+Route::delete('/admin/pharmacies/{id}', [PharmacyManagementController::class, 'destroy'])->name('pharmacies.destroy');

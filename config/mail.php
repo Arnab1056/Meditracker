@@ -92,8 +92,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'coc0107422@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'MediTracker'),
+     
     ],
 
     /*

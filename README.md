@@ -1,8 +1,14 @@
-# Meditracker frontend for GitHub Pages
+# MediTracker Frontend
 
-This `docs/` folder contains a static copy of the Meditracker frontend design suitable for publishing via GitHub Pages.
+This branch contains the static MediTracker frontend for GitHub Pages.
 
-How to publish:
+## GitHub Pages
 
-1. Commit and push this branch to GitHub.
-2. In the repository Settings → Pages, set the source to the `docs/` folder on the `main` branch.
+Use the following GitHub Pages configuration:
+
+- Branch: `frontend`
+- Folder: `/ (root)`
+
+The main entry file is:
+
+`index.html`
